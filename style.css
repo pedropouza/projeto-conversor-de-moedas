@@ -41,6 +41,7 @@ main {
   display: flex;    /* Para ficarem um do lado do outro */
   gap: 1.6rem;
   margin-top: 1.6rem;
+  align-items: center;
 }
 
 .money-wrapper {
@@ -81,6 +82,15 @@ main {
   position: absolute;
   top: 0;
   right: 0;
+  height: 5.6rem;   /* Altura do topo da borda até a borda de baixo; para ficar mostrando somente a primeira moeda, USD */
+  overflow: hidden; /* Esconder os elementos que transbordam (no caso, as outras moedas) */
+}
+
+.dropdown:hover {
+  height: fit-content;  /* Se encaixa com o conteudo; */
+  /* Como foi definido a altura do .dropdown de 5.6rem, quando descesse o mouse para escolher outra moeda ficava saindo dessa altura, pois tem um pequeno espaço entre o elemento escondido e o selecionado */
+  /* Então o fit-content significa que o hover está terminando depois de tudo, até o final do conteudo .dropdown, não importando se tem esse espaço ou não, ele só vai sair do :hover até o final do conteudo */
+  overflow: initial;  /* Volta a aparecer as moedas, ja que não esconde mais o conteudo que transborda */
 }
 
 .selected {
@@ -109,17 +119,97 @@ main {
 
 }
 
-.selected:hover {
+.selected:hover, li:hover {
   background-color: var(--bg-hover);
 }
 
-.fi.fis {
+.fi.fis {   /* São as bandeirinhas dos países ao lado de cada moeda (foram pegas de uma biblioteca, e o link está no inicio do HTML) */
   font-size: 2.4rem;
   border-radius: 50%;
 }
 
+/* UL */
+
+ul {
+  list-style: none;
+  box-shadow: 0px 4px 16px rgba(15, 23, 42, 0.15);
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 0;
+  width: 16rem;
+  max-height: 17rem;  /* O maximo dessa caixa será essa altura, e se não couber todos os elementos nele, vai ter um scroll */
+  margin-top: 0.8rem;
+  overflow-y: scroll; /* Para os elementos que vazaram no eixo Y terem o scroll */
+  position: relative; /* Necessario para habilitar o z-index */
+  z-index: 1;
+}
+
+li {
+  padding: 1.2rem 1.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  cursor: pointer;
+}
+
+/* CAMBIO */
+
 .cambio .wrapper {
   margin-top: 2.4rem;
-  width: 59.2rem;
-  height: 35.6rem;
+
+}
+
+.tooltip {
+  background-color: #fff;
+  box-shadow: 0 0.4rem 1.6rem rgb(15 23 42 / .15);
+  border-radius: 0.4rem;
+  padding: 0.8rem;
+}
+
+.chart-controls {
+  display: flex;
+  justify-content: space-between;
+  margin: -2.2rem 0.8rem 0 4rem;
+}
+
+.chart-controls button {
+  background-color: transparent;
+  border: 0;
+  width: 4rem;
+  height: 2.4rem;
+  font-size: 1.2rem;
+  line-height: 1.6rem;
+  text-align: center;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.chart-controls button:hover,
+.chart-controls button.active {
+  color: #fff;
+  background-color: #7c3aed;
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px;
+}
+
+.msg p {
+  text-align: center;
+}
+
+@media (max-width: 48rem) { /* Calculado 768px (largura em tablet) / 16px (padrão de fonte do website) = 48 */
+  /* Então ao inves de usar 768px, da para usar 48rem, pois está fazendo a divisão pelo tamanho do fontsize padrão dos navegadores */
+  main {
+    padding: 1.6rem;
+    gap: 3.2rem;
+  }
+  section h2 {
+    font-size: 1.6rem;
+  }
+  .conversor .wrapper {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  .money-wrapper {
+    width: 100%;
+  }
 }
